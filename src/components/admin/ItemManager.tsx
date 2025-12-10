@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../supabaseClient';
-import { DBItem } from '../../types';
+import { supabase } from '../../../supabaseClient';
+import { DBItem } from '../../../types';
 import { Plus, Trash2, Edit2, Save, X, Loader2, Search, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -38,6 +38,7 @@ const ItemManager: React.FC<ItemManagerProps> = ({ tableName, title }) => {
     const channel = supabase
       .channel(`${tableName}_realtime`)
       .on('postgres_changes', { event: '*', schema: 'public', table: tableName }, (payload) => {
+        // Handle realtime updates instantly, checking for duplicates
         if (payload.eventType === 'INSERT') {
           setItems((prev) => {
             const exists = prev.some(item => String(item.id) === String(payload.new.id));
@@ -45,11 +46,7 @@ const ItemManager: React.FC<ItemManagerProps> = ({ tableName, title }) => {
             return [payload.new as DBItem, ...prev];
           });
         } else if (payload.eventType === 'DELETE') {
-          // If we have an ID from the payload, remove it. 
-          // Note: payload.old.id might be available depending on table replica identity.
-          if (payload.old && payload.old.id) {
-             setItems((prev) => prev.filter((item) => String(item.id) !== String(payload.old.id)));
-          }
+          setItems((prev) => prev.filter((item) => String(item.id) !== String(payload.old.id)));
         } else if (payload.eventType === 'UPDATE') {
           setItems((prev) => prev.map((item) => (String(item.id) === String(payload.new.id) ? (payload.new as DBItem) : item)));
         }
@@ -63,23 +60,18 @@ const ItemManager: React.FC<ItemManagerProps> = ({ tableName, title }) => {
 
   // CRUD Operations
   const handleDelete = async (id: string | number) => {
-    if (!id) return;
     if (!window.confirm('Are you sure you want to delete this item?')) return;
     
-    const idString = String(id);
-    const previousItems = [...items];
+    // Optimistic Update: Immediately remove from UI
+    // Using String() conversion to ensure type safety between number/string IDs
+    setItems(prev => prev.filter(i => String(i.id) !== String(id)));
 
-    // Optimistic Update
-    setItems(prev => prev.filter(i => String(i.id) !== idString));
-
-    try {
-      const { error } = await supabase.from(tableName).delete().eq('id', id);
-      if (error) throw error;
-    } catch (error: any) {
-      console.error('Delete failed:', error);
+    const { error } = await supabase.from(tableName).delete().eq('id', id);
+    
+    if (error) {
       alert('Error deleting item: ' + error.message);
       // Revert if error
-      setItems(previousItems);
+      fetchItems(); 
     }
   };
 
@@ -188,7 +180,7 @@ const ItemManager: React.FC<ItemManagerProps> = ({ tableName, title }) => {
 
       {/* Grid List */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <AnimatePresence mode='popLayout'>
+        <AnimatePresence>
           {loading ? (
              <div className="col-span-full flex justify-center py-20 text-saffron-500">
                <Loader2 className="animate-spin" size={40} />
@@ -205,10 +197,11 @@ const ItemManager: React.FC<ItemManagerProps> = ({ tableName, title }) => {
           ) : (
             filteredItems.map((item) => (
               <motion.div
+                layout
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                key={String(item.id)}
+                key={item.id}
                 className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 overflow-hidden flex flex-col group relative"
               >
                 <div className="absolute top-0 left-0 w-1 h-full bg-saffron-500 transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top"></div>
@@ -238,7 +231,7 @@ const ItemManager: React.FC<ItemManagerProps> = ({ tableName, title }) => {
                    </button>
                    <button 
                      onClick={(e) => {
-                         // Removed stopPropagation just to be safe, though unlikely to be the cause.
+                         e.stopPropagation(); // Prevent duplicate events
                          handleDelete(item.id);
                      }}
                      className="p-2 text-stone-500 hover:text-white hover:bg-red-500 rounded-lg transition-colors"
@@ -264,7 +257,7 @@ const ItemManager: React.FC<ItemManagerProps> = ({ tableName, title }) => {
               onClick={closeModal}
               className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50"
             />
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-auto">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
               <motion.div 
                  initial={{ scale: 0.95, opacity: 0, y: 20 }}
                  animate={{ scale: 1, opacity: 1, y: 0 }}

@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import About from './pages/About';
-import Services from './pages/Services';
-import Pujas from './pages/Pujas';
-import Vastu from './pages/Vastu';
-import EPuja from './pages/EPuja';
-import Contact from './pages/Contact';
-import Reviews from './pages/Reviews';
-import Loader from './components/Loader';
-import BackgroundSymbols from './components/BackgroundSymbols';
-import { LanguageProvider } from './LanguageContext';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import Home from '../pages/Home';
+import About from '../pages/About';
+import Services from '../pages/Services';
+import Pujas from '../pages/Pujas';
+import Vastu from '../pages/Vastu';
+import EPuja from '../pages/EPuja';
+import Contact from '../pages/Contact';
+import Reviews from '../pages/Reviews';
+import Loader from '../components/Loader';
+import BackgroundSymbols from '../components/BackgroundSymbols';
+import { LanguageProvider } from '../LanguageContext';
 
 // Admin Imports
-import Login from './pages/admin/Login';
-import Dashboard from './pages/admin/Dashboard';
+import Login from '../pages/admin/Login';
+import Dashboard from '../pages/admin/Dashboard';
 
 // Scroll to top on route change
 const ScrollToTop = () => {

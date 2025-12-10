@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { CONTACT_INFO } from '../constants';
-import { useLanguage } from '../LanguageContext';
+import { CONTACT_INFO } from '../../constants';
+import { useLanguage } from '../../LanguageContext';
 import { Lock } from 'lucide-react';
 
 const Footer: React.FC = () => {

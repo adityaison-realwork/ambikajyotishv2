@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { LayoutTemplate, Map, Factory, Compass, Search, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useLanguage } from '../LanguageContext';
-import BookingModal from '../components/BookingModal';
-import { supabase } from '../supabaseClient';
-import { DBItem } from '../types';
+import { useLanguage } from '../../LanguageContext';
+import BookingModal from '../../components/BookingModal';
+import { supabase } from '../../supabaseClient';
+import { DBItem } from '../../types';
 
 const icons = [LayoutTemplate, LayoutTemplate, Factory, Map];
 

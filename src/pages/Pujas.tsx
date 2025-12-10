@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, Flame, Search, ArrowRight, Loader2, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useLanguage } from '../LanguageContext';
-import BookingModal from '../components/BookingModal';
-import { supabase } from '../supabaseClient';
-import { DBItem } from '../types';
+import { useLanguage } from '../../LanguageContext';
+import BookingModal from '../../components/BookingModal';
+import { supabase } from '../../supabaseClient';
+import { DBItem } from '../../types';
 
 const Pujas: React.FC = () => {
   const { t } = useLanguage();
