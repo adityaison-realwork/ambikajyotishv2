@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ambika Jyotish | Pandit Anil Kumar Vyas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              saffron: {
+                50: '#fffbf0',
+                100: '#fff4c2',
+                200: '#ffe685',
+                300: '#ffd047',
+                400: '#ffb314',
+                500: '#f59300', // Primary Brand Color
+                600: '#d97200',
+                700: '#b35200',
+                800: '#914008',
+                900: '#78350d',
+              },
+              maroon: {
+                900: '#4a0404',
+              }
+            },
+            fontFamily: {
+              serif: ['Playfair Display', 'Georgia', 'serif'],
+              sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            },
+            backgroundImage: {
+              'mandala-pattern': "url('https://www.transparenttextures.com/patterns/binding-light.png')",
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #fffbf0;
+        background-image: url("https://www.transparenttextures.com/patterns/subtle-white-feathers.png");
+      }
+      /* Custom scrollbar for a premium feel */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #fffbf0;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #f59300;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #d97200;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^11.0.8",
+    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.87.1"
+  }
+}
+</script>
+</head>
+  <body class="text-stone-800 font-sans antialiased overflow-x-hidden selection:bg-saffron-200 selection:text-saffron-900">
+    <div id="root"></div>
+  </body>
+</html>
